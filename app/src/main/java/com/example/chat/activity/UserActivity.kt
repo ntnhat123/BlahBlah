@@ -64,7 +64,7 @@ class UserActivity: AppCompatActivity() {
                 for (datasnapshot in snapshot.children) {
                     val user = datasnapshot.getValue(User::class.java)
                     if (user != null) {
-                        if (user.userId != FirebaseAuth.getInstance().currentUser!!.uid) {
+                        if(user.userId != FirebaseAuth.getInstance().currentUser!!.uid){
                             userList.add(user)
                         }
                     }
