@@ -31,8 +31,8 @@ class ChatActivity: AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             finish()
         }
-        val intent=intent
-        val user = intent.getStringExtra("uid")
+
+
 
 
 
@@ -42,27 +42,10 @@ class ChatActivity: AppCompatActivity() {
     }
 
     fun getUserInfo() {
-        firebaseUser = FirebaseAuth.getInstance().currentUser!!
-        databaseReference = FirebaseDatabase.getInstance().reference.child("/Users").child(firebaseUser.uid)
-        databaseReference.addValueEventListener(object : ValueEventListener {
 
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(User::class.java)
-                Log.d(TAG, "onDataChange: " + user!!.userName)
-                binding.tvUserName.text = user.userName
-
-                if (user.userImage.equals("default")){
-                    binding.imgProfilechat.setImageResource(R.drawable.user)
-                } else {
-                    Glide.with(this@ChatActivity).load(user.userImage).into(binding.imgProfilechat)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@ChatActivity, databaseError.message, Toast.LENGTH_SHORT).show()
-            }
-        })
+        val intent=intent
+        val user = intent.getStringExtra("userName")
+        binding.tvUserName.text= user
     }
 
 

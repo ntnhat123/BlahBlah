@@ -109,7 +109,7 @@ class RegisterActivity: AppCompatActivity(), View.OnClickListener {
                         hashMap.put("profileImageUrl", "default")
                         databaseReference.setValue(hashMap).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                progressDialog.dismiss()
+                                 progressDialog.dismiss()
                                 Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
                                 startActivity(Intent(this, LoginActivity::class.java))
                             }

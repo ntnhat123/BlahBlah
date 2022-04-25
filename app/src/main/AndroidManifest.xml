@@ -12,19 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chat">
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.RegisterActivity"
             android:exported="true">
+
+        </activity >
+
+        <activity android:name=".MainActivity" android:exported="true" />
+        <activity android:name=".activity.LoginActivity" android:exported="true" />
+        <activity android:name=".activity.ForgotPasswordActivity" android:exported="true" />
+        <activity android:name=".activity.ProfileActivity" android:exported="true" />
+        <activity android:name=".activity.UserActivity" android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+
         </activity>
-        <activity android:name=".MainActivity" android:exported="true" />
-        <activity android:name=".activity.RegisterActivity" android:exported="true" />
-        <activity android:name=".activity.ForgotPasswordActivity" android:exported="true" />
-        <activity android:name=".activity.ProfileActivity" android:exported="true" />
-        <activity android:name=".activity.UserActivity" android:exported="true" />
         <activity android:name=".activity.ChatActivity" android:exported="true" />
 
     </application>
