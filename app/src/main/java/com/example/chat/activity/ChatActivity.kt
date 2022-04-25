@@ -24,6 +24,7 @@ class ChatActivity: AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -31,9 +32,6 @@ class ChatActivity: AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             finish()
         }
-
-
-
 
 
         getUserInfo()

@@ -21,7 +21,7 @@ class UserAdapter(private val context: UserActivity, private val userList: Array
         holder.txtusername.text= user.userName
         Glide.with(context).load(user.userImage).placeholder(R.drawable.user).into(holder.imgImage)
         holder.cardView.setOnClickListener {
-            Toast.makeText(context, user.userName, Toast.LENGTH_SHORT).show()
+
             val intent = android.content.Intent(context, ChatActivity::class.java)
             intent.putExtra("uid", user.userId)
             intent.putExtra("userName", user.userName)

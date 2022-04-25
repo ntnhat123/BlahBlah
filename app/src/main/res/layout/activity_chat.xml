@@ -51,42 +51,41 @@
         android:layout_above="@id/r1"
         android:layout_below="@id/l1" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/r1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="center"-->
-<!--            android:orientation="horizontal">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-<!--            <EditText-->
-<!--                android:id="@+id/etMessage"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/gilroy_light"-->
-<!--                android:layout_weight="1"-->
-<!--                android:inputType="text"-->
-<!--                android:background="@color/colorTextBackground"-->
-<!--                android:hint="@string/type_message"-->
-<!--                android:padding="12dp"-->
-<!--                android:textColor="@color/colorText" />-->
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/btnSendMessage"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:src="@drawable/ic_send"-->
-<!--                android:background="@drawable/button_background"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:textColor="@color/colorAccent"-->
-<!--                android:text="@string/btn_sign_up"/>-->
+                android:layout_weight="1"
+                android:inputType="text"
+                android:hint="Nhập tin nhắn"
+                android:padding="12dp"
+                android:textColor="@color/black" />
 
-<!--        </LinearLayout>-->
+            <ImageButton
+                android:id="@+id/btnSendMessage"
+                android:layout_width="40dp"
+                android:src="@drawable/ic_send"
+                android:background="@drawable/btn"
+                android:layout_height="40dp"
+
+                android:text="Gửi tin nhắn"/>
+
+        </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

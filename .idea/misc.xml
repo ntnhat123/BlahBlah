@@ -4,12 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1255" />
+        <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/btn.xml" value="0.1255" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1255" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.1255" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.1255" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.1255" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_bg.xml" value="0.1315" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_bg_login.xml" value="0.1255" />
+        <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/drawable/ic_send.xml" value="0.1255" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/layout/activity_chat.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/layout/activity_forgotpass.xml" value="0.25407608695652173" />
         <entry key="..\:/Users/ADMINIS/AndroidStudioProjects/Chat/app/src/main/res/layout/activity_login.xml" value="0.2" />
