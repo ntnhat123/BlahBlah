@@ -12,6 +12,9 @@ import com.example.chat.R
 import com.example.chat.model.Chat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChatAdapter(private val context: Context, private val chatList: ArrayList<Chat>) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
     private val MESSAGE_TYPE_LEFT: Int = 1
@@ -46,6 +49,10 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
         val chatList = chatList[position]
         if(holder.javaClass == ViewHolder::class.java) {
             holder.txtUserName.text = chatList.message
+            val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val currentDate = formatter.format(Date())
+            holder.date.text = currentDate
+
 
         }
 
@@ -54,6 +61,7 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtUserName: TextView = itemView.findViewById(R.id.tvMessage)
+        val date : TextView = itemView.findViewById(R.id.tvTime)
 
         val imgUser: ImageView = itemView.findViewById(R.id.userImage)
     }
