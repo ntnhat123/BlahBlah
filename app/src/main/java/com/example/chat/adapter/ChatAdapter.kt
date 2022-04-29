@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.chat.R
 import com.example.chat.model.Chat
 import com.google.firebase.auth.FirebaseAuth
@@ -47,14 +48,15 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chatList = chatList[position]
+        holder.txtUserName.text = chatList.message
+
         if(holder.javaClass == ViewHolder::class.java) {
-            holder.txtUserName.text = chatList.message
             val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
             val currentDate = formatter.format(Date())
             holder.date.text = currentDate
 
-
         }
+        Glide.with(context).load(chatList.userImage).placeholder(R.drawable.user).into(holder.imgUser)
 
 
     }

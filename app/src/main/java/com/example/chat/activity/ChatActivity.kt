@@ -19,6 +19,7 @@ import com.example.chat.model.PushNotification
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,6 +77,7 @@ class ChatActivity: AppCompatActivity(){
                 sendNotification(it)
 
             }
+            getImage()
 
         }
 
@@ -126,7 +128,7 @@ class ChatActivity: AppCompatActivity(){
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-
+                chatList.clear()
 
 
                 if (p0.exists()) {
@@ -137,10 +139,22 @@ class ChatActivity: AppCompatActivity(){
                     val chatAdapter = ChatAdapter(this@ChatActivity,chatList)
                     binding.chatRecyclerView.adapter = chatAdapter
                     binding.chatRecyclerView.scrollToPosition(chatList.size - 1)
+
+
                 }
             }
 
         })
+    }
+    fun getImage(){
+        val storage = FirebaseStorage.getInstance()
+        val storageReference = storage.reference
+        val imageRef = storageReference.child("images/"+firebaseUser.uid+".jpg")
+        imageRef.downloadUrl.addOnSuccessListener {
+            Log.d("TAG", "onSuccess: $it")
+        }.addOnFailureListener {
+            Log.d("TAG", "onFailure: $it")
+        }
     }
 
 

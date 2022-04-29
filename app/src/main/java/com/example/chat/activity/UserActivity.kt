@@ -1,9 +1,17 @@
 package com.example.chat.activity
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.database.DataSetObserver
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -14,7 +22,7 @@ import com.example.chat.firebase.FirebaseData
 import com.example.chat.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceIdReceiver
 
 
@@ -27,6 +35,7 @@ class UserActivity: AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
     var userList = ArrayList<User>()
 
+    private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserBinding.inflate(layoutInflater)
@@ -47,6 +56,31 @@ class UserActivity: AppCompatActivity() {
             finish()
 
         }
+
+//        binding.searchView.setOnClickListener {
+//
+//            val intent = Intent(this, UserActivity::class.java)
+//            startActivity(intent)
+//            val search = binding.searchView.query.toString()
+//            searchByUsername(search)
+//            Toast.makeText(this, search, Toast.LENGTH_LONG).show()
+//
+//        }
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val intent = Intent(this@UserActivity, UserActivity::class.java)
+                startActivity(intent)
+                searchByUsername(query.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
         getUserList()
 
     }
@@ -89,6 +123,40 @@ class UserActivity: AppCompatActivity() {
                 recyclerView.adapter = userAdapter
             }
         })
+    }
+
+    fun searchByUsername(userName: String){
+        val userRef = FirebaseDatabase.getInstance().getReference("/Users")
+        userRef.addValueEventListener(object :
+            com.google.firebase.database.ValueEventListener {
+            override fun onCancelled(snapshot: com.google.firebase.database.DatabaseError) {
+            }
+
+            override fun onDataChange(snapshot: com.google.firebase.database.DataSnapshot) {
+                userList.clear()
+                for (datasnapshot in snapshot.children) {
+                    val user = datasnapshot.getValue(User::class.java)
+                    if (user != null) {
+                        if(user.userName.contains(userName)){
+                            userList.add(user)
+                        }
+                    }
+                }
+                val userAdapter = UserAdapter(this@UserActivity, userList)
+                val recyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.userRecyclerView)
+                recyclerView.adapter = userAdapter
+            }
+        })
+
+    }
+    fun filter(e: String){
+        val filterItem = ArrayList<User>()
+        for(item in userList){
+            if(item.userName.toLowerCase().contains(e.toLowerCase())){
+                filterItem.add(item)
+            }
+        }
+        UserAdapter(this@UserActivity, filterItem)
     }
 
 

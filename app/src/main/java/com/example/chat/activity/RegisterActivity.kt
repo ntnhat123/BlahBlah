@@ -106,10 +106,11 @@ class RegisterActivity: AppCompatActivity(), View.OnClickListener {
                         hashMap.put("email", email)
                         hashMap.put("password", password)
                         hashMap.put("confirmPassword", confirmPassword)
-                        hashMap.put("profileImageUrl", "default")
+
+//                        hashMap.put("userImage", "")
                         databaseReference.setValue(hashMap).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                 progressDialog.dismiss()
+                                progressDialog.dismiss()
                                 Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
                                 startActivity(Intent(this, LoginActivity::class.java))
                             }
@@ -126,7 +127,3 @@ class RegisterActivity: AppCompatActivity(), View.OnClickListener {
 
 
 }
-
-
-
-

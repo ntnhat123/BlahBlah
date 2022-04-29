@@ -2,6 +2,7 @@ package com.example.chat.adapter
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -19,15 +20,14 @@ class UserAdapter(private val context: UserActivity, private val userList: Array
     override fun onBindViewHolder(holder: UserAdapter.ViewHolder, position: Int) {
         val user = userList[position]
         holder.txtusername.text= user.userName
+
         Glide.with(context).load(user.userImage).placeholder(R.drawable.user).into(holder.imgImage)
         holder.cardView.setOnClickListener {
-
             val intent = android.content.Intent(context, ChatActivity::class.java)
             intent.putExtra("uid", user.userId)
             intent.putExtra("userName", user.userName)
             context.startActivity(intent)
         }
-
     }
 
     override fun getItemCount(): Int {

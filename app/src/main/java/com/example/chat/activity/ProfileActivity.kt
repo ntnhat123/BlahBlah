@@ -3,6 +3,7 @@ package com.example.chat.activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,12 @@ class ProfileActivity: AppCompatActivity() {
             binding.progressBar.visibility = VISIBLE
 
         }
+        binding.btnLogout.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
 
 
     }
@@ -69,12 +76,7 @@ class ProfileActivity: AppCompatActivity() {
 
                 val user = snapshot.getValue(User::class.java)
                 etUserProfile.setText(user!!.userName)
-                if(user.userImage.isNotEmpty()){
-                    binding.imgProfile2.setImageResource(R.drawable.user)
-                }else{
-                    Glide.with(this@ProfileActivity).load(R.drawable.user).into(binding.imgProfile2)
-                }
-
+//
 
             }
 
@@ -105,7 +107,11 @@ class ProfileActivity: AppCompatActivity() {
                 progress.dismiss()
             binding.progressBar.visibility = ViewGONE
             binding.btnSaveProfile.visibility = ViewGONE
+            storageRef.downloadUrl.addOnSuccessListener {
+                saveUserToStorage(it.toString())
 
+            }
+            getImageProfile(it.toString())
 
         }.addOnFailureListener {
             Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show()
@@ -113,6 +119,20 @@ class ProfileActivity: AppCompatActivity() {
                 progress.dismiss()
         }
     }
+    fun saveUserToStorage(userImage: String) {
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser.uid)
+        val user = User(firebaseUser.uid,binding.etUserProfile.text.toString(),userImage)
+        databaseReference.setValue(user)
+
+    }
+    fun getImageProfile(profileImage: String){
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/$profileImage")
+        storageRef.downloadUrl.addOnSuccessListener {
+            binding.imgProfile2.setImageURI(it)
+        }
+    }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
