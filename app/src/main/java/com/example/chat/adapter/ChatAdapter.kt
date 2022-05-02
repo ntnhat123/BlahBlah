@@ -58,7 +58,6 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
         }
         Glide.with(context).load(chatList.userImage).placeholder(R.drawable.user).into(holder.imgUser)
 
-
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
