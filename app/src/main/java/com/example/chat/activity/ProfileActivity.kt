@@ -59,7 +59,10 @@ class ProfileActivity: AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
-
+        binding.tvUserProfile.setOnClickListener{
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
@@ -75,6 +78,7 @@ class ProfileActivity: AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 val user = snapshot.getValue(User::class.java)
+
                 etUserProfile.setText(user!!.userName)
 //
 
@@ -123,6 +127,7 @@ class ProfileActivity: AppCompatActivity() {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser.uid)
         val user = User(firebaseUser.uid,binding.etUserProfile.text.toString(),userImage)
         databaseReference.setValue(user)
+
 
     }
     fun getImageProfile(profileImage: String){

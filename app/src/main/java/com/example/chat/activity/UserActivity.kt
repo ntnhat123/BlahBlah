@@ -28,12 +28,15 @@ import com.google.firebase.iid.FirebaseInstanceIdReceiver
 
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class UserActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBinding
     var userList = ArrayList<User>()
+    var newArrayList = ArrayList<User>()
 
     private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,23 +51,15 @@ class UserActivity: AppCompatActivity() {
         val recyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.userRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        binding.imgProfile.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
-        }
+
         binding.imgBack.setOnClickListener {
             finish()
         }
+        binding.imgProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
 
-//        binding.searchView.setOnClickListener {
+        }
 //
-//            val intent = Intent(this, UserActivity::class.java)
-//            startActivity(intent)
-//            val search = binding.searchView.query.toString()
-//            searchByUsername(search)
-//            Toast.makeText(this, search, Toast.LENGTH_LONG).show()
-//
-//        }
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
 
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -77,6 +72,34 @@ class UserActivity: AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
+        })
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchByUsername(query.toString())
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                userList.clear()
+                val searchtext = newText!!.toLowerCase(Locale.getDefault())
+                if(searchtext.isNotEmpty()){
+
+                    userList.forEach {
+                        if(it.userName .toLowerCase(Locale.getDefault()).contains(searchtext)){
+                            userList.add(it)
+                        }
+                    }
+                    binding.userRecyclerView.adapter?.notifyDataSetChanged()
+                }
+                else{
+                    userList.clear()
+                    userList.addAll(newArrayList)
+                    binding.userRecyclerView.adapter?.notifyDataSetChanged()
+                }
+                return false
+            }
+
         })
 
         getUserList()
@@ -127,6 +150,7 @@ class UserActivity: AppCompatActivity() {
     fun getUserList(){
         userList = ArrayList()
 
+
         val userid = FirebaseAuth.getInstance().currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic("topic/$userid")
         val userRef = FirebaseDatabase.getInstance().getReference("/Users")
@@ -138,13 +162,6 @@ class UserActivity: AppCompatActivity() {
 
             override fun onDataChange(snapshot: com.google.firebase.database.DataSnapshot) {
                 userList.clear()
-                val currentUser = snapshot.getValue(User::class.java)
-                if(currentUser !!.userImage != ""){ //User model
-                    binding.imgProfile.setImageResource(R.drawable.user)
-
-                }else{
-                    Glide.with(this@UserActivity).load(currentUser.userImage).into(binding.imgProfile)
-                }
 
 
                 for (datasnapshot in snapshot.children) {
@@ -163,15 +180,6 @@ class UserActivity: AppCompatActivity() {
         })
     }
 
-    fun filter(e: String){
-        val filterItem = ArrayList<User>()
-        for(item in userList){
-            if(item.userName.toLowerCase().contains(e.toLowerCase())){
-                filterItem.add(item)
-            }
-        }
-        UserAdapter(this@UserActivity, filterItem)
-    }
 
 
 

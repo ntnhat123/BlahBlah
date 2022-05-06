@@ -41,11 +41,11 @@ class LoginActivity: AppCompatActivity() , View.OnClickListener{
                 android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-//        val gg =GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.default_web_client_id))
-//            .requestEmail()
-//            .build()
-//        googleSignInClient = GoogleSignIn.getClient(this,gg)
+        val gg =GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.app_name))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this,gg)
 
         auth = FirebaseAuth.getInstance()
         listenView()
@@ -56,7 +56,7 @@ class LoginActivity: AppCompatActivity() , View.OnClickListener{
             R.id.tv_register ->startActivity(Intent(this, RegisterActivity::class.java))
             R.id.btn_login->loginByEmail()
             R.id.tv_forgot_password->startActivity(Intent(this, ForgotPasswordActivity::class.java))
-//            R.id.btn_sign_in_google->signIn()
+            R.id.btn_sign_in_google->signIn()
         }
     }
 
@@ -107,40 +107,44 @@ class LoginActivity: AppCompatActivity() , View.OnClickListener{
                 }
         }
     }
-//    private fun signIn() {
-//        val signInIntent = googleSignInClient.signInIntent
-//        startActivityForResult(signInIntent, RC_SIGN_IN)
-//    }
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == RC_SIGN_IN) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            try {
-//                val account = task.getResult(ApiException::class.java)
-//                firebaseAuthWithGoogle(account.idToken!!)
-//            } catch (e: ApiException) {
-//                Log.w(TAG, "Google sign in failed", e)
-//            }
-//        }
-//    }
-//
-//    private fun firebaseAuthWithGoogle(idToken: String) {
-//        val credential = GoogleAuthProvider.getCredential(idToken, null)
-//        auth.signInWithCredential(credential)
-//            .addOnCompleteListener(this) { task ->
-//                if (task.isSuccessful) {
-//                    val user = auth.currentUser
-//                    startActivity(Intent(this, MainActivity::class.java))
-//                    finish()
-//                } else {
-//                    Toast.makeText(
-//                        binding.root.context,
-//                        "Google sign in failed",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//    }
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+
+
+
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.w(TAG, "Google sign in failed", e)
+            }
+        }
+    }
+
+    fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    startActivity(Intent(this, UserActivity::class.java))
+                    finish()
+
+                } else {
+                    Toast.makeText(
+                        binding.root.context,
+                        "Google sign in failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
 
 
 }

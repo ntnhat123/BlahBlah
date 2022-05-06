@@ -87,7 +87,7 @@
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="20dp"
         android:padding="25dp"
-
+        android:id="@+id/tvUserProfile"
         android:text="Chi tiết tài khoản"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"

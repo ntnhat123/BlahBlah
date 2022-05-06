@@ -25,6 +25,7 @@ class UserAdapter(private val context: UserActivity, private val userList: Array
         holder.cardView.setOnClickListener {
             val intent = android.content.Intent(context, ChatActivity::class.java)
             intent.putExtra("uid", user.userId)
+
             intent.putExtra("userName", user.userName)
             context.startActivity(intent)
         }
