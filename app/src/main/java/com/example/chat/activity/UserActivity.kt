@@ -36,7 +36,7 @@ class UserActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBinding
     var userList = ArrayList<User>()
-    var newArrayList = ArrayList<User>()
+    var newArrayList= ArrayList<User>()
 
     private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,20 +59,7 @@ class UserActivity: AppCompatActivity() {
             startActivity(Intent(this, ProfileActivity::class.java))
 
         }
-//
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
 
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-
-                searchByUsername(query.toString())
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchByUsername(query.toString())
@@ -85,9 +72,9 @@ class UserActivity: AppCompatActivity() {
                 val searchtext = newText!!.toLowerCase(Locale.getDefault())
                 if(searchtext.isNotEmpty()){
 
-                    userList.forEach {
-                        if(it.userName .toLowerCase(Locale.getDefault()).contains(searchtext)){
-                            userList.add(it)
+                    for(user in newArrayList){
+                        if(user.userName.toLowerCase(Locale.getDefault()).contains(searchtext)){
+                            userList.add(user)
                         }
                     }
                     binding.userRecyclerView.adapter?.notifyDataSetChanged()
@@ -127,20 +114,7 @@ class UserActivity: AppCompatActivity() {
                 }else{
                     Toast.makeText(this@UserActivity, "No user found", Toast.LENGTH_LONG).show()
                 }
-//                userList.clear()
-//                for (datasnapshot in snapshot.children) {
-//                    val user = datasnapshot.getValue(User::class.java)
-//                    if (user != null) {
-//                        if(user.userName.contains(userName)){
-//                            userList.add(user)
-//                        }
-//                    }else{
-//                        Toast.makeText(this@UserActivity, "Chưa nhập tên", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//                val userAdapter = UserAdapter(this@UserActivity, userList)
-//                val recyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.userRecyclerView)
-//                recyclerView.adapter = userAdapter
+
             }
         })
 
@@ -148,7 +122,7 @@ class UserActivity: AppCompatActivity() {
 
 
     fun getUserList(){
-        userList = ArrayList()
+
 
 
         val userid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -168,11 +142,11 @@ class UserActivity: AppCompatActivity() {
                     val user = datasnapshot.getValue(User::class.java)
                     if (user != null) {
                         if(user.userId != FirebaseAuth.getInstance().currentUser!!.uid){
-
                             userList.add(user)
                         }
                     }
                 }
+                newArrayList.addAll(userList)
                 val userAdapter = UserAdapter(this@UserActivity, userList)
                 val recyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.userRecyclerView)
                 recyclerView.adapter = userAdapter

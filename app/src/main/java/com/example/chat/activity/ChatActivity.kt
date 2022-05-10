@@ -78,48 +78,70 @@ class ChatActivity: AppCompatActivity(){
             message.setText("")
             chatList.clear()
             topic = "topic_" + userId
-            PushNotification(NotificationData(userName!!,message.text.toString()),topic).also {
-                sendNotification(it)
 
-            }
             getImage()
 
         }
 
         // send image
-        val pickImageContracts = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            Log.d(TAG, "uri: $uri")
-            val storageReference = FirebaseStorage.getInstance().reference.child("chat_images")
-            val imageName = UUID.randomUUID().toString()
-            val imageRef = storageReference.child(imageName)
-            imageRef.putFile(uri).addOnSuccessListener {
-                Log.d(TAG, "success")
-                imageRef.downloadUrl.addOnSuccessListener {
-                    Log.d(TAG, "downloadUrl: $it")
-                    val message = findViewById<EditText>(R.id.etMessage)
-                    sendMessage(message.text.toString())
-                    getMessage()
-                    message.setText("")
-                    chatList.clear()
-                    topic = "topic_" + userId
-                    PushNotification(NotificationData(userName!!,message.text.toString()),topic).also {
-                        sendNotification(it)
-
-                    }
-                    getImage()
-                }
-            }
-        }
-        binding.imgSend.setOnClickListener {
-            pickImageContracts.launch("image/*")
-
-        }
+//        val pickImageContracts = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+//            Log.d(TAG, "uri: $uri")
+//            val storageReference = FirebaseStorage.getInstance().reference.child("chat_images")
+//            val imageName = UUID.randomUUID().toString()
+//            val imageRef = storageReference.child(imageName)
+//            imageRef.putFile(uri).addOnSuccessListener {
+//                Log.d(TAG, "success")
+//                imageRef.downloadUrl.addOnSuccessListener {
+//                    Log.d(TAG, "downloadUrl: $it")
+//                    val message = findViewById<EditText>(R.id.etMessage)
+//                    sendMessage(message.text.toString())
+//                    getMessage()
+//                    message.setText("")
+//                    chatList.clear()
+//                    topic = "topic_" + userId
+//                    PushNotification(NotificationData(userName!!,message.text.toString()),topic).also {
+//                        sendNotification(it)
+//
+//                    }
+//                    getImage()
+//                }
+//            }
+//        }
+//        binding.imgSend.setOnClickListener {
+//            pickImageContracts.launch("image/*")
+//
+//        }
 
         getUserInfo()
 
 
     }
+    fun getMessage() {
+        databaseReference = FirebaseDatabase.getInstance().reference.child("Chats")
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
+            override fun onDataChange(p0: DataSnapshot) {
+                chatList.clear()
+
+
+                if (p0.exists()) {
+                    for (i in p0.children) {
+                        val chat = i.getValue(Chat::class.java)
+                        chatList.add(chat!!)
+                    }
+                    val chatAdapter = ChatAdapter(this@ChatActivity,chatList)
+                    binding.chatRecyclerView.adapter = chatAdapter
+                    binding.chatRecyclerView.scrollToPosition(chatList.size - 1)
+
+
+                }
+            }
+
+        })
+    }
     private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch{
         try {
             val response = RetrofitInstance.api.postNotification(notification)
@@ -156,36 +178,9 @@ class ChatActivity: AppCompatActivity(){
         }
 
 
-
-
     }
 
-    fun getMessage() {
-        databaseReference = FirebaseDatabase.getInstance().reference.child("Chats")
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
 
-            override fun onDataChange(p0: DataSnapshot) {
-                chatList.clear()
-
-
-                if (p0.exists()) {
-                    for (i in p0.children) {
-                        val chat = i.getValue(Chat::class.java)
-                        chatList.add(chat!!)
-                    }
-                    val chatAdapter = ChatAdapter(this@ChatActivity,chatList)
-                    binding.chatRecyclerView.adapter = chatAdapter
-                    binding.chatRecyclerView.scrollToPosition(chatList.size - 1)
-
-
-                }
-            }
-
-        })
-    }
     fun getImage(){
         val storage = FirebaseStorage.getInstance()
         val storageReference = storage.reference

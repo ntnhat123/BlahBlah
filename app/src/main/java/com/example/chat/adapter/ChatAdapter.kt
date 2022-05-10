@@ -18,10 +18,7 @@ import com.example.chat.model.Chat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import java.nio.file.Files.delete
+
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,6 +28,16 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
     private val MESSAGE_TYPE_RIGHT: Int = 2
 
     private lateinit var firebaseUser: FirebaseUser
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        if (viewType == MESSAGE_TYPE_RIGHT) {
+            val view = LayoutInflater.from(context).inflate(R.layout.item_right, parent, false)
+            return ViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(context).inflate(R.layout.item_left, parent, false)
+            return ViewHolder(view)
+        }
+    }
     override fun getItemViewType(position: Int): Int {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         if (chatList[position].sender == firebaseUser.uid) {
@@ -39,17 +46,7 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
             return MESSAGE_TYPE_LEFT
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if (viewType == 2) {
-            val view = LayoutInflater.from(context).inflate(R.layout.item_right, parent, false)
-            return ViewHolder(view)
-//            Toast.makeText(context, "right", Toast.LENGTH_SHORT).show()
-        } else {
-            val view = LayoutInflater.from(context).inflate(R.layout.item_left, parent, false)
-            return ViewHolder(view)
-        }
 
-    }
 
     override fun getItemCount(): Int {
         return chatList.size
@@ -69,36 +66,6 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
         }
         Glide.with(context).load(chatList.userImage).placeholder(R.drawable.user).into(holder.imgUser)
 
-        holder.more.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(context)
-            alertDialog.setTitle("Xóa tin nhắn")
-            alertDialog.setMessage("Bạn có muốn thu hồi tin nhắn?")
-            alertDialog.setPositiveButton("Có") { dialog, which ->
-                Log.d("ChatAdapter", "onBindViewHolder: " + chatList.message)
-            }
-            alertDialog.setNegativeButton("Không") { dialog, which ->
-                dialog.dismiss()
-            }
-            alertDialog.show()
-
-            val databaseReference = FirebaseDatabase.getInstance().getReference("Chats")
-            databaseReference.orderByChild("message").equalTo(chatList.message).addValueEventListener(object :ValueEventListener {
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-
-                    for(dataSnapshot in snapshot.children) {
-                        dataSnapshot.ref.removeValue()
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-
-
-        }
     }
 
 
@@ -107,9 +74,7 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtUserName: TextView = itemView.findViewById(R.id.tvMessage)
         val date : TextView = itemView.findViewById(R.id.tvTime)
-
         val imgUser: ImageView = itemView.findViewById(R.id.userImage)
-        val more: ImageView = itemView.findViewById(R.id.btn_more)
 
     }
 
