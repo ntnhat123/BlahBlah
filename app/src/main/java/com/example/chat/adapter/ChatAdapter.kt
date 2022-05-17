@@ -3,6 +3,7 @@ package com.example.chat.adapter
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,9 @@ import com.example.chat.model.Chat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,21 +66,35 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
             holder.date.text = currentDate
 
 
-
         }
         Glide.with(context).load(chatList.userImage).placeholder(R.drawable.user).into(holder.imgUser)
 
+
+
+//        holder.delete.setOnClickListener {
+//            deleteMessage(chatList.message, position)
+//        }
+
     }
 
-
+//    private fun deleteMessage(message: String, position: Int) {
+//        val progressDialog = ProgressDialog(context)
+//        progressDialog.setTitle("Deleting Message")
+//        progressDialog.setMessage("Please wait...")
+//        progressDialog.show()
+//
+//
+//
+//    }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtUserName: TextView = itemView.findViewById(R.id.tvMessage)
         val date : TextView = itemView.findViewById(R.id.tvTime)
         val imgUser: ImageView = itemView.findViewById(R.id.userImage)
-
+//        val delete : ImageView = itemView.findViewById(R.id.delete)
     }
+
 
 
 }

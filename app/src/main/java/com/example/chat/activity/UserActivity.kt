@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.chat.R
 import com.example.chat.adapter.UserAdapter
 import com.example.chat.databinding.ActivityUserBinding
-import com.example.chat.firebase.FirebaseData
+
 import com.example.chat.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -43,7 +43,7 @@ class UserActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        FirebaseData.sharedPref = getSharedPreferences("sharePref", Context.MODE_PRIVATE)
+
 
         FirebaseMessaging.getInstance().subscribeToTopic("all")
         FirebaseMessaging.getInstance().subscribeToTopic("${FirebaseAuth.getInstance().currentUser!!.uid}")

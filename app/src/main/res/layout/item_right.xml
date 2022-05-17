@@ -24,13 +24,11 @@
 
             />
         <ImageView
-            android:id="@+id/btn_more"
-            android:layout_width="20dp"
+            android:layout_width="25dp"
             android:layout_height="30dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_baseline_more_vert_24"
-            tools:ignore="ContentDescription" />
+            android:id="@+id/delete"
+            />
         <TextView
                 android:id="@+id/tvMessage"
                 android:layout_width="wrap_content"
@@ -41,7 +39,7 @@
 
                 android:background="@drawable/item_right_side_background"
                 android:textSize="16sp"
-                tools:text="farhan" />
+                tools:text="hello" />
 
         <ImageView
             android:id="@+id/userImage"
